@@ -63,7 +63,8 @@ class Controller {
 
 
 				}
-			} else {
+			}
+			else {
 				view.printMessage(View.WRONG_INPUT_MESSAGE);
 			}
 		}
