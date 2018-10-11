@@ -22,37 +22,52 @@ class Controller {
 		String notValidatedInput;
 		Scanner sc = new Scanner(System.in);
 		int i = 0;
+		cycle:
 		while (true) {
 			if (i > 0) {
 				view.printMessage(View.ATTEMPTS_MESSAGE + model.getAttempts());
 			}
-			view.printRange(model.getMin(), model.getMax());
+			view.printRange(model.getLowBoundary(), model.getHighBoundary());
 			notValidatedInput = sc.next();
 			if (validate(notValidatedInput)) {
 				userAttemp = Integer.parseInt(notValidatedInput);
 				i++;
-				if (model.check(userAttemp)) {
-					view.printMessage(View.WIN_MESSAGE);
-					break;
-				} else if (userAttemp >= model.getMin() && userAttemp <= model.getMax()) {
-					if (userAttemp > model.getNUMBER()) {
-						view.printMessage(View.LESS_MESSAGE);
+				switch (model.check(userAttemp)) {
+					case 0: {
+						view.printMessage(View.WIN_MESSAGE);
 						model.addAttempts(userAttemp);
-
-					} else {
-						view.printMessage(View.MORE_MESSAGE);
-						model.addAttempts(userAttemp);
-
+						break cycle;
 					}
-					model.changeRange(userAttemp);
-				} else {
-					view.printMessage(View.OUT_OF_RANGE_MESSAGE);
-					i--;
+					case 1: {
+						if (userAttemp >= model.getLowBoundary() && userAttemp <= model.getHighBoundary()) {
+							view.printMessage(View.MORE_MESSAGE);
+							model.changeRange(userAttemp);
+							model.addAttempts(userAttemp);
+						} else {
+							view.printMessage(View.OUT_OF_RANGE_MESSAGE);
+						}
+						break ;
+					}
+
+					case -1: {
+						if (userAttemp >= model.getLowBoundary() && userAttemp <= model.getHighBoundary()) {
+							view.printMessage(View.LESS_MESSAGE);
+							model.changeRange(userAttemp);
+							model.addAttempts(userAttemp);
+						}
+						else {
+							view.printMessage(View.OUT_OF_RANGE_MESSAGE);
+							i--;
+						}
+						break;
+					}
+
+
 				}
 			} else {
 				view.printMessage(View.WRONG_INPUT_MESSAGE);
 			}
-		 }
+		}
 	}
 
 

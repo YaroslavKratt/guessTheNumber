@@ -1,18 +1,20 @@
 package ua.training;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Model {
 	private static final int NUMBER = new Random().nextInt(101);
-	private int min;
-	private int max;
+	private int lowBoundary;
+	private int highBoundary;
 	private ArrayList<Integer> attempts = new ArrayList<>();
 
 	Model() {
-		min = 0;
-		max = 100;
+		lowBoundary = 0;
+		highBoundary = 100;
 	}
 
 	public List<Integer> getAttempts() {
@@ -24,36 +26,28 @@ public class Model {
 	}
 
 
-	public int getMin() {
-		return min;
+	public int getLowBoundary() {
+		return lowBoundary;
 	}
 
-	public int getMax() {
-		return max;
+	public int getHighBoundary() {
+		return highBoundary;
 	}
 
 	public void changeRange(int userAttempt) {
 		if (Integer.compare(Model.NUMBER, userAttempt) == 1) {
-			min = userAttempt;
+			lowBoundary = userAttempt;
 		} else if (Integer.compare(Model.NUMBER, userAttempt) == -1) {
-			max = userAttempt;
+			highBoundary = userAttempt;
 		} else {
-			min = userAttempt;
-			max = userAttempt;
+			lowBoundary = userAttempt;
+			highBoundary = userAttempt;
 		}
 	}
 
-	public static int getNUMBER() {
-		return NUMBER;
-	}
 
-	public boolean check(int userAttempt) {
-		if (Model.NUMBER == userAttempt) {
-			return true;
-		} else {
-			return false;
-		}
-
+	public int check(int userAttempt) {
+		return Integer.compare(Model.NUMBER, userAttempt);
 	}
 
 }
