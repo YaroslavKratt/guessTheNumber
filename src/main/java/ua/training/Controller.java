@@ -12,7 +12,6 @@ class Controller {
 	}
 
 	public void start() {
-		Scanner sc = new Scanner(System.in);
 		view.printMessage(View.WELCOME_MESSAGE);
 		play();
 	}
