@@ -13,6 +13,7 @@ class Controller {
 
 	public void start() {
 		view.printMessage(View.WELCOME_MESSAGE);
+		model.setSecretNumber();
 		play();
 	}
 
@@ -31,39 +32,38 @@ class Controller {
 			if (validate(notValidatedInput)) {
 				userAttemp = Integer.parseInt(notValidatedInput);
 				i++;
-				switch (model.check(userAttemp)) {
-					case 0: {
-						view.printMessage(View.WIN_MESSAGE);
-						model.addAttempts(userAttemp);
-						break cycle;
-					}
-					case 1: {
-						if (userAttemp >= model.getLowBoundary() && userAttemp <= model.getHighBoundary()) {
-							view.printMessage(View.MORE_MESSAGE);
-							model.changeRange(userAttemp);
-							model.addAttempts(userAttemp);
-						} else {
-							view.printMessage(View.OUT_OF_RANGE_MESSAGE);
+				if (userAttemp >= model.getLowBoundary() && userAttemp <= model.getHighBoundary()) {
+					model.changeRange(userAttemp);
+					model.addAttempts(userAttemp);
+					switch (model.check(userAttemp)) {
+						case 0: {
+							view.printMessage(View.WIN_MESSAGE);
+							break cycle;
 						}
-						break ;
-					}
+						case 1: {
+							if (userAttemp >= model.getLowBoundary() && userAttemp <= model.getHighBoundary()) {
+								view.printMessage(View.MORE_MESSAGE);
 
-					case -1: {
-						if (userAttemp >= model.getLowBoundary() && userAttemp <= model.getHighBoundary()) {
-							view.printMessage(View.LESS_MESSAGE);
-							model.changeRange(userAttemp);
-							model.addAttempts(userAttemp);
+							} else {
+								view.printMessage(View.OUT_OF_RANGE_MESSAGE);
+							}
+							break;
 						}
+
+						case -1: {
+							if (userAttemp >= model.getLowBoundary() && userAttemp <= model.getHighBoundary()) {
+								view.printMessage(View.LESS_MESSAGE);
+
+							}
+							break;
+						}
+					}
+				}
 						else {
 							view.printMessage(View.OUT_OF_RANGE_MESSAGE);
 							i--;
 						}
-						break;
 					}
-
-
-				}
-			}
 			else {
 				view.printMessage(View.WRONG_INPUT_MESSAGE);
 			}
